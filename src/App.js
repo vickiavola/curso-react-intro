@@ -12,28 +12,43 @@ const defaultTodos = [
   { text: 'Llamar al comune', completed: false },
   { text: 'Diseñar páginas web', completed: false },
 ];
-*/
 
-// localStorage.setItem('TODOS_V1', JSON.stringify(defaultTodos));
+localStorage.setItem('TODOS_V1', JSON.stringify(defaultTodos));
+*/
 
 // localStorage.removeItem('TODOS_V1');
 
-function App() {
-  const localStorageTodos = localStorage.getItem('TODOS_V1');
+function useLocalStorage(itemName, initialValue) {
 
-  let parsedTodos;
+  const localStorageItem = localStorage.getItem('itemName');
 
-  if (!localStorageTodos) {
-    localStorage.setItem('TODOS_V1', JSON.stringify([]));
-    parsedTodos=[];
+  let parsedItem;
+
+  if (!localStorageItem) {
+    localStorage.setItem(itemName, JSON.stringify(initialValue));
+    parsedItem=[];
   }else {
-    parsedTodos = JSON.parse(localStorageTodos);
+    parsedItem = JSON.parse(localStorageItem);
   }
 
+  const [item, setItem] = React.useState(parsedItem);
 
-  const [todos, setTodos] = React.useState(parsedTodos);
+  // Aquí estamos guardando los TODOS en la aplicacion (con el estado de react)
+  //y ademas estamos guardando en el local storage
+  const saveItem = (newItem) => {
+    localStorage.setItem('itemName', JSON.stringify(newItem));
+    setItem(newItem);
+  };
+
+  return [item, saveItem];
+}
+
+
+function App() {
+
+
+  const [todos, saveTodos] = useLocalStorage('TODOS_V1', []);
   const [searchValue, setSearchValue] = React.useState('');
-  console.log('Los usuarios buscan todos de ' + searchValue);
 
   const completedTodos = todos.filter(
     todo => !!todo.completed
@@ -48,11 +63,7 @@ function App() {
       return todoText.includes(searchText);
     }
   );
-// Aquí estamos guardando los TODOS en la aplicacion (con el estado de react) y ademas estamos guardando en el local storage
-  const saveTodos = (newTodos) => {
-    localStorage.setItem('TODOS_V1', JSON.stringify(newTodos));
-    setTodos(newTodos);
-  };
+
 
   const completeTodo = (text) => {
     const newTodos = [...todos];
