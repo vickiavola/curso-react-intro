@@ -1,6 +1,5 @@
 import React from 'react';
-import './index.css';
-import { TodoIcon } from './TodoIcon';
+import { TodoIcon } from './';
 
 function DeleteIcon({ onDelete }) {
   return (
