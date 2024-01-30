@@ -26,7 +26,7 @@ function TodoForm() {
 
   return(
     <form onSubmit={onSubmit}>
-      <label>Escribe tu nuevo TODO</label>
+    <label>Escribe tu nuevo TODO!</label>
       <textarea 
         placeholder="Aprender React"
         value={newTodoValue}
